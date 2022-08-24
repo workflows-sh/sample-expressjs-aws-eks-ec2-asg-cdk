@@ -1,0 +1,54 @@
+version: "1"
+pipelines:
+  - name: sample-expressjs-pipeline-aws-eks-ec2-asg:0.1.0
+    description: build a release for deployment
+    env:
+      static:
+        - DEBIAN_FRONTEND=noninteractive
+        - ORG=workflows-sh
+        - REPO=sample-expressjs-aws-eks-ec2-asg
+        - REF=main
+        - AWS_REGION=us-west-1
+        - STACK_TYPE=aws-eks-ec2-asg
+      secrets:
+        - GITHUB_TOKEN
+        - AWS_ACCESS_KEY_ID
+        - AWS_SECRET_ACCESS_KEY
+        - AWS_ACCOUNT_NUMBER
+    events:
+      - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg:pull_request.merged"
+      - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg:pull_request.opened"
+      - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg:pull_request.synchronize"
+    jobs:
+      - name: sample-expressjs-build-job-aws-eks-ec2-asg
+        description: sample-expressjs build step
+        packages:
+          - git
+          - unzip
+          - python
+        steps:
+          - curl https://s3.amazonaws.com/aws-cli/awscli-bundle-1.18.200.zip -o awscli-bundle.zip
+          - unzip awscli-bundle.zip && ./awscli-bundle/install -b ~/bin/aws
+          - export PATH=~/bin:$PATH
+          - aws --version
+          - git clone https://$GITHUB_TOKEN:x-oauth-basic@github.com/$ORG/$REPO
+          - cd $REPO && ls -asl
+          - git fetch && git checkout $REF
+          - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_NUMBER.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO
+          - docker build -f Dockerfile -t $AWS_ACCOUNT_NUMBER.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO-$STACK_TYPE:$REF .
+          - docker push $AWS_ACCOUNT_NUMBER.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO-$STACK_TYPE:$REF
+services:
+  - name: sample-expressjs-service-aws-eks-ec2-asg:0.1.2
+    description: A sample expressjs service
+    run: node /ops/index.js
+    port: [ '8080:8080' ]
+    domain: ""
+    env:
+      static:
+        - PORT=8080
+    events:
+      - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg:pull_request.merged"
+    trigger:
+     - build
+     - publish
+     - start
