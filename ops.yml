@@ -48,5 +48,3 @@ services:
         - PORT=8080
     events:
       - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg:pull_request.merged"
-      - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg:pull_request.opened"
-      - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg:pull_request.synchronize"
