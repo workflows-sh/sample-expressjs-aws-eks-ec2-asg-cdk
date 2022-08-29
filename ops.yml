@@ -8,7 +8,7 @@ pipelines:
         - ORG=workflows-sh
         - REPO=sample-expressjs-aws-eks-ec2-asg-cdk
         - AWS_REGION=us-west-1
-        - STACK_TYPE=aws-eks-ec2-asg
+        - STACK_TYPE=aws-eks-ec2-asg-cdk
       secrets:
         - GITHUB_TOKEN
         - AWS_ACCESS_KEY_ID
