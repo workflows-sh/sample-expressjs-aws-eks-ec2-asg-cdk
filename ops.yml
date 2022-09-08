@@ -37,7 +37,7 @@ pipelines:
           - docker build -f Dockerfile -t $AWS_ACCOUNT_NUMBER.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO-$STACK_TYPE:$REF .
           - docker push $AWS_ACCOUNT_NUMBER.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO-$STACK_TYPE:$REF
 services:
-  - name: sample-expressjs-service-aws-eks-ec2-asg-cdk:0.1.1
+  - name: sample-expressjs-service-aws-eks-ec2-asg-cdk:0.1.2
     description: A sample expressjs service
     run: node /ops/index.js
     port: [ '8080:8080' ]
@@ -47,6 +47,7 @@ services:
         - PORT=8080
     events:
       - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg-cdk:pull_request.merged"
+      - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg-cdk:pull_request.opened"
     trigger:
      - build
      - publish
