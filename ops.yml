@@ -1,25 +1,25 @@
 version: "1"
 pipelines:
-  - name: sample-expressjs-pipeline-aws-eks-ec2-asg-cdk:0.1.2
+  - name: sample-expressjs-pipeline-aws-eks-ec2-asg-cdktf:0.1.0
     description: build a release for deployment
     env:
       static:
         - DEBIAN_FRONTEND=noninteractive
         - ORG=workflows-sh
-        - REPO=sample-expressjs-aws-eks-ec2-asg-cdk
+        - REPO=sample-expressjs-aws-eks-ec2-asg-cdktf
         - AWS_REGION=us-west-1
-        - STACK_TYPE=aws-eks-ec2-asg-cdk
+        - STACK_TYPE=aws-eks-ec2-asg-cdktf
       secrets:
         - GITHUB_TOKEN
         - AWS_ACCESS_KEY_ID
         - AWS_SECRET_ACCESS_KEY
         - AWS_ACCOUNT_NUMBER
     events:
-      - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg-cdk:pull_request.merged"
-      - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg-cdk:pull_request.opened"
-      - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg-cdk:pull_request.synchronize"
+      - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg-cdktf:pull_request.merged"
+      - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg-cdktf:pull_request.opened"
+      - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg-cdktf:pull_request.synchronize"
     jobs:
-      - name: sample-expressjs-build-job-aws-eks-ec2-asg-cdk
+      - name: sample-expressjs-build-job-aws-eks-ec2-asg-cdktf
         description: sample-expressjs build step
         packages:
           - git
@@ -37,7 +37,7 @@ pipelines:
           - docker build -f Dockerfile -t $AWS_ACCOUNT_NUMBER.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO-$STACK_TYPE:$REF .
           - docker push $AWS_ACCOUNT_NUMBER.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO-$STACK_TYPE:$REF
 services:
-  - name: sample-expressjs-service-aws-eks-ec2-asg-cdk:0.1.2
+  - name: sample-expressjs-service-aws-eks-ec2-asg-cdktf:0.1.0
     description: A sample expressjs service
     run: node /ops/index.js
     port: [ '8080:8080' ]
@@ -46,8 +46,8 @@ services:
       static:
         - PORT=8080
     events:
-      - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg-cdk:pull_request.merged"
-      - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg-cdk:pull_request.opened"
+      - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg-cdktf:pull_request.merged"
+      - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg-cdktf:pull_request.opened"
     trigger:
      - build
      - publish
