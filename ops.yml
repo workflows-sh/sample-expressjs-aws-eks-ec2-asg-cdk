@@ -48,6 +48,7 @@ services:
     events:
       - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg-cdk:pull_request.merged"
       - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg-cdk:pull_request.opened"
+      - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg-cdk:pull_request.closed"
     trigger:
      - build
      - publish
