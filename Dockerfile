@@ -7,3 +7,5 @@ ADD package.json .
 RUN npm install
 
 ADD --chown=ops:9999 . .
+
+ENTRYPOINT node /ops/index.js
