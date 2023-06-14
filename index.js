@@ -6,7 +6,7 @@ const HOST = '0.0.0.0'
 
 // !* Edit here for demos
 
-const RELEASE_NO = 'PROD-110'
+const RELEASE_NO = 'PROD-111'
 
 const api = express()
 
