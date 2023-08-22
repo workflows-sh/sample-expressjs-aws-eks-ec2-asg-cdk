@@ -41,6 +41,7 @@ services:
     description: A sample expressjs service
     run: node /ops/index.js
     port: [ '8080:8080' ]
+    sdk: off
     domain: ""
     env:
       static:
