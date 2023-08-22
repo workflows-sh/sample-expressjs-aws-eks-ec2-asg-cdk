@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 3000
 const HOST = '0.0.0.0'
 
 // !* Edit here for demos
-const RELEASE_NO = 'PROD-107'
+const RELEASE_NO = 'PROD-108'
 
 const api = express()
 
