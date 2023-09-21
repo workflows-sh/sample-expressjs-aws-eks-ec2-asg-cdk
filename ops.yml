@@ -1,6 +1,6 @@
 version: "1"
 pipelines:
-  - name: sample-expressjs-pipeline-aws-eks-ec2-asg-cdk:0.1.2
+  - name: sample-expressjs-pipeline-aws-eks-ec2-asg-cdk:0.1.3
     description: build a release for deployment
     env:
       static:
@@ -30,7 +30,7 @@ pipelines:
           - unzip awscli-bundle.zip && ./awscli-bundle/install -b ~/bin/aws
           - export PATH=~/bin:$PATH
           - aws --version
-          - git clone https://$GITHUB_TOKEN:x-oauth-basic@github.com/$ORG/$REPO
+          - git clone https://oauth2:$GITHUB_TOKEN@github.com/$ORG/$REPO
           - cd $REPO && ls -asl
           - git fetch && git checkout $REF
           - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_NUMBER.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO
