@@ -20,12 +20,7 @@ api.get('/', (req, res) => {
   })
 })
 
-class Car {
-  constructor(name, year) {
-    this.name = name;
-    this.year = year;
-  }
-}
+const Car = require('./car')
 
 const myCar1 = new Car("Ford", 2014);
 const myCar2 = new Car("Audi", 2019);
