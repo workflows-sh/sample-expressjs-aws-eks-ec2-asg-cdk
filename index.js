@@ -22,8 +22,8 @@ api.get('/', (req, res) => {
 
 const Car = require('./car')
 
-const myCar1 = new Car("Ford", 2014);
-const myCar2 = new Car("Audi", 2019);
+const myCar1 = new Car("Ford", 2014)
+const myCar2 = new Car("Audi")
 
 api.listen(PORT, HOST)
 console.log(`Running on http://${HOST}:${PORT}`)
