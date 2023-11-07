@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 3000
 const HOST = '0.0.0.0'
 
 // !* Edit here for demos
-const RELEASE_NO = 'PROD-118'
+const RELEASE_NO = 'PROD-119'
 
 const api = express()
 
@@ -22,4 +22,3 @@ api.get('/', (req, res) => {
 
 api.listen(PORT, HOST)
 console.log(`Running on http://${HOST}:${PORT}`)
-
