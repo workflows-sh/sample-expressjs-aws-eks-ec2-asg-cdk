@@ -1,0 +1,37 @@
+h3 Weather Forecast
+button(id="geolocate") Get Local Forecast
+p(id="coords")
+#forecast
+    if forecast.current
+        if forecast.current.temperature_2m
+            #currentTemperature
+                span(id="currentTempVal") #{forecast.current.temperature_2m[0]}
+                span(id="currentTempUnit") #{forecast.current.temperature_2m[1]}
+        if forecast.current.description
+            #currentDescription
+                span #{forecast.current.description}
+        if forecast.current.relative_humidity_2m
+            #currentHumidity
+                .label
+                    span(class="forecastLabel") Humidity
+                .value
+                    span(id="currentHumidityVal") #{forecast.current.relative_humidity_2m[0]}
+                    span(id="currentHumidityUnit") #{forecast.current.relative_humidity_2m[1]}
+        if forecast.current.feels_like
+            #currentFeel
+                .label
+                    span(class="forecastLabel") Feels Like
+                .value
+                    span(id="currentFeelVal") #{forecast.current.feels_like[0]}
+                    span(id="currentFeelUnit") #{forecast.current.feels_like[1]}
+        if forecast.current.wind_speed_10m
+            #currentWind
+                .label
+                    span(class="forecastLabel") Wind
+                .value
+                    span(id="currentWindSpeed") #{forecast.current.wind_speed_10m[0]}#{forecast.current.wind_speed_10m[1]}
+                    | &nbsp;@&nbsp;
+                    span(id="currentWindDirection") #{forecast.current.wind_direction_10m[0]}#{forecast.current.wind_direction_10m[1]}
+                    | &nbsp;
+                    span(id="currentWindCompass", title=forecast.current.wind_compass) (#{forecast.current.wind_compass_short})
+
