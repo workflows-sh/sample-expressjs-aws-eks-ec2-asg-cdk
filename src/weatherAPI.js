@@ -145,7 +145,7 @@ function generateForecast(weatherData) {
         dailyForecasts[day] = singleDayForecast
     })
 
-    console.log(dailyForecasts)
+    // console.log(dailyForecasts)
     return dailyForecasts
 }
 
@@ -182,8 +182,8 @@ function getWeather(lat, lon, timezone) {
         timezone: timezone
     })
 
-    console.log('------------------------------\nQuery parameters:')
-    console.log(queryParams)
+    // console.log('------------------------------\nQuery parameters:')
+    // console.log(queryParams)
 
     const queryString = Object.keys(queryParams).map(key => key + '=' + queryParams[key]).join('&')
 

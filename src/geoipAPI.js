@@ -29,6 +29,16 @@ function buildAPIRequest(ipAddr, fieldsVal) {
 
 }
 
+const defaultCoords = {
+    status: 'success',
+    country: 'Canada',
+    regionName: 'Ontario',
+    city: 'Toronto',
+    lat: '43.7',
+    lon: '-79.42',
+    timezone: 'America/Toronto',
+}
+
 function apiRequest(url) {
 
     return new Promise((resolve, reject) => {
@@ -49,6 +59,7 @@ function apiRequest(url) {
             res.on('end', () => {
                 try {
                     coordsResponse = JSON.parse(responseData)
+                    // console.log("coordsResponse: ", coordsResponse)
 
                     // Because this sample app is used in live demos, we want to
                     // anonymize the coordinates returned to the client side.
@@ -58,13 +69,17 @@ function apiRequest(url) {
                     }
 
                     if (coordsResponse.status !== 'success') {
-                        throw new Error('API request to `ip-api.com` failed.')
+                        // If our query to the geolocation API endpoint fails,
+                        // return the default coordinates object, which has the
+                        // coordinates and timezone for Toronto, Ontario, Canada.
+                        console.error('API request to `ip-api.com` did not succeed. Rejecting with default coordinates object (Toronto).')
+                        reject(defaultCoords)
                     } else {
                         resolve(coordsResponse)
                     }
                 } catch (e) {
                     console.error(e.message)
-                    reject(e)
+                    reject(defaultCoords)
                 }
             })
         })
@@ -78,7 +93,29 @@ function apiRequest(url) {
     })
 }
 
-function requestCoordsFromIP(ipAddr) {
+// function requestCoordsFromIP(ipAddr) {
+
+//     // Validate input and throw an error if the input string isn't a valid IP address.
+//     if (!ipAddrRegex.test(ipAddr)) {
+//         throw new Error('Invalid IP address format')
+//     }
+
+//     const url = buildAPIRequest(ipAddr, 'status,country,regionName,city,lat,lon,timezone')
+//     return apiRequest(url)
+// }
+
+// function requestCityFromIP(ipAddr) {
+
+//     // Validate input and throw an error if the input string isn't a valid IP address.
+//     if (!ipAddrRegex.test(ipAddr)) {
+//         throw new Error('Invalid IP address format')
+//     }
+
+//     const url = buildAPIRequest(ipAddr, 'status,country,regionName,city,lat,lon,timezone')
+//     return apiRequest(url)
+// }
+
+function geolocateFromIP(ipAddr) {
 
     // Validate input and throw an error if the input string isn't a valid IP address.
     if (!ipAddrRegex.test(ipAddr)) {
@@ -89,20 +126,10 @@ function requestCoordsFromIP(ipAddr) {
     return apiRequest(url)
 }
 
-function requestCityFromIP(ipAddr) {
-
-    // Validate input and throw an error if the input string isn't a valid IP address.
-    if (!ipAddrRegex.test(ipAddr)) {
-        throw new Error('Invalid IP address format')
-    }
-
-    const url = buildAPIRequest(ipAddr, 'status,country,regionName,city')
-    return apiRequest(url)
-}
-
 
 
 module.exports = {
-    requestCityFromIP,
-    requestCoordsFromIP,
+    // requestCityFromIP,
+    // requestCoordsFromIP,
+    geolocateFromIP,
 }

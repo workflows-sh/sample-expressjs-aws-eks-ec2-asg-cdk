@@ -2,7 +2,7 @@ h3 Weather Forecast
 button(id="geolocate") Get Local Forecast
 p(id="coords")
 #forecast
-    if forecast.current
+    if forecast && forecast.current
         if forecast.current.temperature_2m
             #currentTemperature
                 span(id="currentTempVal") #{forecast.current.temperature_2m[0]}
