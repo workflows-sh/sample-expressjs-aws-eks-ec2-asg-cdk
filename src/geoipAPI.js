@@ -112,28 +112,6 @@ function apiRequest(url) {
     })
 }
 
-// function requestCoordsFromIP(ipAddr) {
-
-//     // Validate input and throw an error if the input string isn't a valid IP address.
-//     if (!ipAddrRegex.test(ipAddr)) {
-//         throw new Error('Invalid IP address format')
-//     }
-
-//     const url = buildAPIRequest(ipAddr, 'status,country,regionName,city,lat,lon,timezone')
-//     return apiRequest(url)
-// }
-
-// function requestCityFromIP(ipAddr) {
-
-//     // Validate input and throw an error if the input string isn't a valid IP address.
-//     if (!ipAddrRegex.test(ipAddr)) {
-//         throw new Error('Invalid IP address format')
-//     }
-
-//     const url = buildAPIRequest(ipAddr, 'status,country,regionName,city,lat,lon,timezone')
-//     return apiRequest(url)
-// }
-
 function geolocateFromIP(ipAddr) {
 
     // Validate input and throw an error if the input string isn't a valid IP address.
@@ -148,7 +126,5 @@ function geolocateFromIP(ipAddr) {
 
 
 module.exports = {
-    // requestCityFromIP,
-    // requestCoordsFromIP,
     geolocateFromIP,
 }
