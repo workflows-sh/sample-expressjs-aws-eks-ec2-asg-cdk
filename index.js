@@ -32,22 +32,7 @@ api.get('/', (req, res) => {
         // If the geolocation is successful, format the name of the returned location,
         // then call the weather API with the coordinates and timezone.
 
-        if ("regionName" in coords && "city" in coords && "country" in coords) {
-            renderValues.locationName = `${coords.city}, ${coords.regionName}, ${coords.country}`
-        } else if ("country" in coords) {
-            if ("city" in coords) {
-                renderValues.locationName = `${coords.city}, ${coords.country}`
-            } else if ("regionName" in coords) {
-                renderValues.locationName = `${coords.regionName}, ${coords.country}`
-            } else {
-                renderValues.locationName = coords.country
-            }
-        } else if ("city" in coords) {
-            renderValues.locationName = coords.city
-        } else {
-            renderValues.locationName = coords.regionName
-        }
-
+        renderValues.locationName = coords.locationName
         return weather(coords.lat, coords.lon, coords.timezone)
     }).catch(() => {
         // If the geolocation fails, default to Toronto, Ontario, Canada, then call
@@ -92,11 +77,9 @@ api.get('/geolocate', (req, res) => {
     // will send a request to `/geolocate` to get the estimated coordinates
     // of the client's IP address. This will then return the coordinates to the
     // client, which will use them to call the weather API as it normally would.
-    geolocateFromIP(req.ip).then((coords) => {
-        res.json(coords)
-    }).catch((e) => {
-        res.json({status: 'error', code: 500, message: e.message})
-    })
+    geolocateFromIP(req.ip)
+        .then(coords => res.json(coords))
+        .catch(e => res.json({status: 'error', code: 500, message: e.message}))
 })
 
 api.get('/weather', (req, res) => {

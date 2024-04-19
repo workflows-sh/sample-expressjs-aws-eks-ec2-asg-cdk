@@ -61,6 +61,25 @@ function apiRequest(url) {
                     coordsResponse = JSON.parse(responseData)
                     // console.log("coordsResponse: ", coordsResponse)
 
+                    let locationName = ''
+                    if ("regionName" in coordsResponse && "city" in coordsResponse && "country" in coordsResponse) {
+                        locationName = `${coordsResponse.city}, ${coordsResponse.regionName}, ${coordsResponse.country}`
+                    } else if ("country" in coordsResponse) {
+                        if ("city" in coordsResponse) {
+                            locationName = `${coordsResponse.city}, ${coordsResponse.country}`
+                        } else if ("regionName" in coordsResponse) {
+                            locationName = `${coordsResponse.regionName}, ${coordsResponse.country}`
+                        } else {
+                            locationName = coordsResponse.country
+                        }
+                    } else if ("city" in coordsResponse) {
+                        locationName = coordsResponse.city
+                    } else {
+                        locationName = coordsResponse.regionName
+                    }
+
+                    coordsResponse.locationName = locationName
+
                     // Because this sample app is used in live demos, we want to
                     // anonymize the coordinates returned to the client side.
                     if ("lat" in coordsResponse && "lon" in coordsResponse) {
