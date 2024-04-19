@@ -49,7 +49,7 @@ api.get('/', (req, res) => {
         }
 
         return weather(coords.lat, coords.lon, coords.timezone)
-    }).catch((coords) => {
+    }).catch(() => {
         // If the geolocation fails, default to Toronto, Ontario, Canada, then call
         // the weather API with the coordinates and timezone.
 
@@ -62,13 +62,28 @@ api.get('/', (req, res) => {
         // template values specified in `renderValues`.
 
         renderValues.forecast = weatherData
-        res.render('index', renderValues)
+        return res.render('index', renderValues, function (err, html) {
+            if (err) {
+                console.error("Error rendering index page:", err)
+                return res.status(500).send('An error occurred while rendering the page.')
+            } else {
+                return res.send(html)
+            }
+        })
     }).catch((e) => {
         // If the weather API call fails, render the index page with the template
         // and the limited values that are available.
 
         console.error("Error in main route:", e)
-        res.render('index', renderValues)
+        res.render('index', renderValues, function (err, html) {
+            if (err) {
+                console.error("Error rendering index page:", err)
+                return res.status(500).send('An error occurred while rendering the page.')
+            } else {
+                return res.send(html)
+            }
+
+        })
     })
 })
 
