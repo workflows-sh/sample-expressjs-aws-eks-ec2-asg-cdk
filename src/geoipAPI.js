@@ -46,9 +46,12 @@ function apiRequest(url) {
         let coordsResponse = {}
 
         const geoipReq = http.get(url, (res) => {
-            // console.log(`STATUS: ${res.statusCode}`)
-            // console.log(`HEADERS: ${JSON.stringify(res.headers)}`)
             res.setEncoding('utf8')
+
+            if (res.statusCode !== 200) {
+                console.error(`API request to 'ip-api.com' failed with status code ${res.statusCode}`)
+                reject(defaultCoords)
+            }
 
             let responseData = '';
             res.on('data', (chunk) => {

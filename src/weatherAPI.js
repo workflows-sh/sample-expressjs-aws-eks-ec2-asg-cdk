@@ -176,9 +176,12 @@ function getWeather(lat, lon, timezone) {
     return new Promise((resolve, reject) => {
         let weatherResponse = {}
         const weatherReq = http.get(url, (res) => {
-            // console.log(`STATUS: ${res.statusCode}`)
-            // console.log(`HEADERS: ${JSON.stringify(res.headers)}`)
             res.setEncoding('utf8')
+
+
+            if (res.statusCode !== 200) {
+                reject(new Error(`HTTP ${res.statusCode} ${res.statusMessage}`))
+            }
 
             let responseData = ''
             res.on('data', (chunk) => {
@@ -189,6 +192,11 @@ function getWeather(lat, lon, timezone) {
             res.on('end', () => {
                 try {
                     weatherResponse = JSON.parse(responseData)
+                    console.log("Weather API raw response: ", weatherResponse)
+
+                    // TODO: Throw an error if the `weatherResponse` object
+                    // is missing the expected keys (i.e. `current`, `daily`)
+
                     weatherResponse.current.weather = weatherCodes[weatherResponse.current['weather_code']]
                     weatherResponse.daily.weather = []
                     weatherResponse.daily.weather_code.forEach(day => {
@@ -209,7 +217,7 @@ function getWeather(lat, lon, timezone) {
         })
 
         weatherReq.on('error', (e) => {
-            console.error(`problem with request: ${e.message}`)
+            console.error(`Problem retrieving weather: ${e.message}`)
             reject(e)
         })
 
