@@ -33,40 +33,24 @@ const weatherCodes = {
     99: 'Thunderstorm',
 }
 
-// A 32-point compass rose
+// A 16-point compass rose, where each point is 22.5 degrees from the previous.
 const compassPoints = [
     ['North', 'N'],
-    ['North by East', 'NbE'],
     ['North-Northeast', 'NNE'],
-    ['Northeast by North', 'NEbN'],
     ['Northeast', 'NE'],
-    ['Northeast by East', 'NEbE'],
     ['East-Northeast', 'ENE'],
-    ['East by North', 'EbN'],
     ['East', 'E'],
-    ['East by South', 'EbS'],
     ['East-Southeast', 'ESE'],
-    ['Southeast by East', 'SEbE'],
     ['Southeast', 'SE'],
-    ['Southeast by South', 'SEbS'],
     ['South-Southeast', 'SSE'],
-    ['South by East', 'SbE'],
     ['South', 'S'],
-    ['South by West', 'SbW'],
     ['South-Southwest', 'SSW'],
-    ['Southwest by South', 'SWbS'],
     ['Southwest', 'SW'],
-    ['Southwest by West', 'SWbW'],
     ['West-Southwest', 'WSW'],
-    ['West by South', 'WbS'],
     ['West', 'W'],
-    ['West by North', 'WbN'],
     ['West-Northwest', 'WNW'],
-    ['Northwest by West', 'NWbW'],
     ['Northwest', 'NW'],
-    ['Northwest by North', 'NWbN'],
     ['North-Northwest', 'NNW'],
-    ['North by West', 'NbW']
 ]
 
 // Example Open-Meteo API query showing how the parameters are used:
@@ -170,7 +154,7 @@ function generateCurrentConditions(weatherData) {
         }
     })
 
-    const windCompass = compassPoints[Math.round(rawConditions.wind_direction_10m / 11.25)]
+    const windCompass = compassPoints[Math.round(rawConditions.wind_direction_10m / 22.5)]
     currentConditions['wind_compass'] = windCompass[0]
     currentConditions['wind_compass_short'] = windCompass[1]
 
