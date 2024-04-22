@@ -154,7 +154,7 @@ function generateCurrentConditions(weatherData) {
         }
     })
 
-    const windCompass = compassPoints[Math.round(rawConditions.wind_direction_10m / 22.5)]
+    const windCompass = compassPoints[Math.round((rawConditions.wind_direction_10m - 11.25) / 22.5)]
     currentConditions['wind_compass'] = windCompass[0]
     currentConditions['wind_compass_short'] = windCompass[1]
 
