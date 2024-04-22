@@ -1,13 +1,7 @@
-const http = require('node:http')
-const { parse } = require('node:path')
-// https://api.open-meteo.com/v1/forecast?
-// latitude=49.2497&
-// longitude=-123.1193&
-// current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m,wind_direction_10m&
-// daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max&
-// timezone=America%2FLos_Angeles&
-// forecast_days=3
+const http = require('http')
 
+// These are the WMO Weather interpretation codes definitions referenced
+// in the Open-Meteo API documentation.
 const weatherCodes = {
     0: 'Clear',
     1: 'Mostly Clear',
@@ -75,6 +69,15 @@ const compassPoints = [
     ['North by West', 'NbW']
 ]
 
+// Example Open-Meteo API query showing how the parameters are used:
+// https://api.open-meteo.com/v1/forecast?
+// latitude=49.2497&
+// longitude=-123.1193&
+// current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m,wind_direction_10m&
+// daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max&
+// timezone=America%2FLos_Angeles&
+// forecast_days=3
+
 const defaultQueryParams = {
     latitude: 49.24,
     longitude: -123.11,
@@ -84,6 +87,7 @@ const defaultQueryParams = {
     forecast_days: 3
 }
 
+// This function is currently unused, but kept because it may be usedful in the future.
 // function requestCityFromCoords(lat, lon) {
 //     const baseApiQuery = "http://api.geonames.org/findNearbyPlaceName?username=ctoai_n3a7&cities=cities15000"
 //     const requestURL = `${baseApiQuery}&lat=${lat}&lng=${lon}`
@@ -145,7 +149,6 @@ function generateForecast(weatherData) {
         dailyForecasts[day] = singleDayForecast
     })
 
-    // console.log(dailyForecasts)
     return dailyForecasts
 }
 
@@ -182,9 +185,6 @@ function getWeather(lat, lon, timezone) {
         timezone: timezone
     })
 
-    // console.log('------------------------------\nQuery parameters:')
-    // console.log(queryParams)
-
     const queryString = Object.keys(queryParams).map(key => key + '=' + queryParams[key]).join('&')
 
     const url = `http://api.open-meteo.com/v1/forecast?${queryString}`
@@ -210,9 +210,6 @@ function getWeather(lat, lon, timezone) {
                     weatherResponse.daily.weather_code.forEach(day => {
                         weatherResponse.daily.weather.push(weatherCodes[day])
                     })
-                    // console.log('------------------------------\nWeather response:')
-                    // console.log(weatherResponse)
-                    // console.log('------------------------------')
 
                     const parsedWeatherData = {
                         current: generateCurrentConditions(weatherResponse),
@@ -229,6 +226,7 @@ function getWeather(lat, lon, timezone) {
 
         weatherReq.on('error', (e) => {
             console.error(`problem with request: ${e.message}`)
+            reject(e)
         })
 
         weatherReq.end()
