@@ -8,11 +8,23 @@ html(lang="en")
     link(rel="stylesheet", href="/stylesheets/style.css")
     title CTO.ai
   body
-    img(id="logo", src="/images/cto_logo_primary.svg", alt="CTO.ai logo")
-    br
-    img(id="rocket", src="/images/cto_rocket.png", alt="CTO.ai Rocket")
-    #content
-      h1 Success!
-      h2 #{release_no}
-      p Congratulations, your service was deployed successfully on the Developer Control Plane!
+    #header
+      img(id="logo", src="/images/cto_logo_primary.svg", alt="CTO.ai logo")
+      #success
+        img(id="rocket", src="/images/cto_rocket.png", alt="CTO.ai Rocket")
+        #message
+            h1 Success!
+            h2 #{release_no}
+      br
       a(href="https://cto.ai/docs") Explore our Documentation
+
+    #content
+      #location
+        h3 Status Message
+        p Congratulations, your service was deployed successfully on the Developer Control Plane!
+        p You are visiting this site from <strong>#{locationName}</strong> via <code>#{ipAddr}</code>.
+      #weather
+        include currentConditions.pug
+
+
+    script(defer, src="/js/client.js")
