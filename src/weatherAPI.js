@@ -182,8 +182,9 @@ function generateCurrentConditions(weatherData) {
 function parseWeatherResponse(rawData) {
     console.log("Weather API raw response: ", rawData)
 
-    // TODO: Throw an error if the `rawData` object
-    // is missing the expected keys (i.e. `current`, `daily`)
+    if (!rawData.current || !rawData.daily) {
+        throw new Error('Invalid weather data received')
+    }
 
     rawData.current.weather = weatherCodes[rawData.current['weather_code']]
     rawData.daily.weather = []
