@@ -11,7 +11,7 @@ module.exports = function (ipAddr) {
         if (typeof ipAddr !== 'string') {
             throw new Error('Invalid input type')
         }
-        if (!ipAddrRegex.test(ipAddr)) {
+        if (!ipAddr || !ipAddrRegex.test(ipAddr)) {
             throw new Error('Invalid IP address format')
         }
 
