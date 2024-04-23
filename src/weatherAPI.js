@@ -182,8 +182,19 @@ function generateCurrentConditions(weatherData) {
 function parseWeatherResponse(rawData) {
     console.log("Weather API raw response: ", rawData)
 
-    // TODO: Throw an error if the `rawData` object
-    // is missing the expected keys (i.e. `current`, `daily`)
+    // Throw an error if the raw data is missing the expected keys.
+    if (!rawData.current || !rawData.daily) {
+        throw new Error('Invalid weather data received')
+    }
+
+    // Throw an error if the number of days returned in the daily forecast
+    // is inconsistent between the different data fields.
+    let numOfDays = rawData.daily.time.length
+    for (const key in rawData.daily) {
+        if (rawData.daily[key].length !== numOfDays) {
+            throw new Error('Inconsistent daily forecast data')
+        }
+    }
 
     rawData.current.weather = weatherCodes[rawData.current['weather_code']]
     rawData.daily.weather = []
