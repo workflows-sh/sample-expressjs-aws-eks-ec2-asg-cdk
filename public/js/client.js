@@ -4,7 +4,7 @@
   * @returns {String} The anonymized coordinate, truncated to two decimal places.
   * @param {Number} coord The coordinate value to anonymize.
   */
-export function anonymizeCoordinate(coord) {
+function anonymizeCoordinate(coord) {
 
     // We want to randomly add or substract a small value to the coordinate to
     // anonymize it. To decide whether to add or subtract, we generate a random

@@ -28,6 +28,12 @@ api.get('/', (req, res) => {
         ipAddr: anonymizeip(clientIP),
     }
 
+    // For the initial page load on the main route, the server will attempt to
+    // geolocate the user based on their IP address. If the geolocation is
+    // successful, the server will then call the weather API with the coordinates
+    // and timezone obtained from the geolocation API. If the geolocation fails,
+    // the server will default to Toronto, Ontario, Canada, and call the weather
+    // API with the coordinates and timezone for Toronto.
     const weatherResp = geolocateFromIP(clientIP).then((coords) => {
         // If the geolocation is successful, format the name of the returned location,
         // then call the weather API with the coordinates and timezone.

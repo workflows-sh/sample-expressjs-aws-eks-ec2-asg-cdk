@@ -161,6 +161,53 @@ function generateCurrentConditions(weatherData) {
     return currentConditions
 }
 
+/**
+ * Parse the raw weather data retrieved from the Open-Meteo API into a format
+ * that can be used more easily by the client-side code.
+ * @param {Object} rawData - The raw weather data retrieved from the Open-Meteo API.
+ * @param {Number} rawData.latitude - The latitude of the location.
+ * @param {Number} rawData.longitude - The longitude of the location.
+ * @param {String} rawData.timezone - The timezone of the location.
+ * @param {Object} rawData.current - The current weather conditions.
+ * @param {Object} rawData.current_units - The units for the current weather conditions.
+ * @param {Object} rawData.daily - The daily weather forecast.
+ * @param {Object} rawData.daily_units - The units for the daily weather forecast.
+ * @param {string[]} rawData.daily.time - The timestamps for the daily forecast.
+ * @param {number[]} rawData.daily.weather_code - The weather codes for the daily forecast.
+ * @param {number[]} rawData.daily.temperature_2m_max - The maximum daily temperature.
+ * @param {number[]} rawData.daily.temperature_2m_min - The minimum daily temperature.
+ * @param {number[]} rawData.daily.precipitation_sum - The daily precipitation amount.
+ * @param {number[]} rawData.daily.precipitation_probability_max - The maximum daily precipitation probability.
+ */
+function parseWeatherResponse(rawData) {
+    console.log("Weather API raw response: ", rawData)
+
+    // TODO: Throw an error if the `rawData` object
+    // is missing the expected keys (i.e. `current`, `daily`)
+
+    rawData.current.weather = weatherCodes[rawData.current['weather_code']]
+    rawData.daily.weather = []
+    rawData.daily.weather_code.forEach(day => {
+        rawData.daily.weather.push(weatherCodes[day])
+    })
+
+    const parsedWeatherData = {
+        current: generateCurrentConditions(rawData),
+        daily_forecast: generateForecast(rawData)
+    }
+
+    return parsedWeatherData
+}
+
+/**
+ * Fetch weather data from the Open-Meteo API based on the provided latitude,
+ * longitude, and timezone. Returns a Promise that resolves with the parsed
+ * weather data.
+ * @returns {Promise<http.ClientRequest>} A Promise that resolves with the parsed weather data.
+ * @param {string} lat - The latitude of the location.
+ * @param {string} lon - The longitude of the location.
+ * @param {string} timezone - The timezone of the location.
+ */
 function getWeather(lat, lon, timezone) {
 
     const queryParams = Object.assign({}, defaultQueryParams, {
@@ -169,46 +216,35 @@ function getWeather(lat, lon, timezone) {
         timezone: timezone
     })
 
+    // Construct the query string from the `queryParams` object, after merging
+    // the submitted values with the default values.
     const queryString = Object.keys(queryParams).map(key => key + '=' + queryParams[key]).join('&')
 
     const url = `http://api.open-meteo.com/v1/forecast?${queryString}`
 
     return new Promise((resolve, reject) => {
         let weatherResponse = {}
+
+        // Make the request to the Open-Meteo API to get the weather data.
         const weatherReq = http.get(url, (res) => {
             res.setEncoding('utf8')
 
-
+            // If the response status code is not 200, reject the Promise with an error.
             if (res.statusCode !== 200) {
                 reject(new Error(`HTTP ${res.statusCode} ${res.statusMessage}`))
             }
 
+            // Create a variable to store the response data chunks as they come in.
             let responseData = ''
             res.on('data', (chunk) => {
                 // console.log(`BODY: ${JSON.stringify(chunk)}`)
                 responseData += chunk
             })
 
+            // When the response has finished, parse the JSON data and resolve the Promise.
             res.on('end', () => {
                 try {
-                    weatherResponse = JSON.parse(responseData)
-                    console.log("Weather API raw response: ", weatherResponse)
-
-                    // TODO: Throw an error if the `weatherResponse` object
-                    // is missing the expected keys (i.e. `current`, `daily`)
-
-                    weatherResponse.current.weather = weatherCodes[weatherResponse.current['weather_code']]
-                    weatherResponse.daily.weather = []
-                    weatherResponse.daily.weather_code.forEach(day => {
-                        weatherResponse.daily.weather.push(weatherCodes[day])
-                    })
-
-                    const parsedWeatherData = {
-                        current: generateCurrentConditions(weatherResponse),
-                        daily_forecast: generateForecast(weatherResponse)
-                    }
-
-                    resolve(parsedWeatherData)
+                    resolve(parseWeatherResponse(JSON.parse(responseData)))
                 } catch (e) {
                     console.error(e.message)
                     reject(e)
