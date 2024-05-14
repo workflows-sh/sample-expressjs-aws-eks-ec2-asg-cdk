@@ -1,0 +1,7 @@
+# for more info visit https://cto.ai/docs
+version: "1"
+commands:
+  - name: sample-expressjs-test-job-aws-eks-ec2-asg-cdk:0.1.4
+    description: sample-expressjs test step
+    run: bash /ops/main.sh
+    sdk: 2

@@ -3,14 +3,18 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "",
   "license": "ISC",
+  "scripts": {
+    "test": "jest"
+  },
   "dependencies": {
     "express": "^4.17.1",
-    "mysql": "^2.18.1",
     "pug": "^3.0.2"
+  },
+  "devDependencies": {
+    "jest": "^27.5.1",
+    "jest-environment-node": "^27.5.1",
+    "supertest": "^7.0.0"
   }
 }

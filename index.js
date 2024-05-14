@@ -12,6 +12,7 @@ const api = express()
 api.set('views', path.join(__dirname, 'views'));
 api.set('view engine', 'pug');
 
+api.use(express.json())
 api.use(express.static(path.join(__dirname, 'public')));
 
 api.get('/', (req, res) => {
@@ -20,5 +21,7 @@ api.get('/', (req, res) => {
   })
 })
 
-api.listen(PORT, HOST)
+const server = api.listen(PORT, HOST)
 console.log(`Running on http://${HOST}:${PORT}`)
+
+module.exports = server
