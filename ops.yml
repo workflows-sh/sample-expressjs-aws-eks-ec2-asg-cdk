@@ -57,6 +57,11 @@ pipelines:
         packages:
           - git
           - npm
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
         steps:
           - touch ~/.bashrc
           - curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
