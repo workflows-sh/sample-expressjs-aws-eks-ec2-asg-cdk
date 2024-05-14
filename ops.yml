@@ -43,7 +43,6 @@ pipelines:
         - DEBIAN_FRONTEND=noninteractive
         - ORG=workflows-sh
         - REPO=sample-expressjs-aws-eks-ec2-asg-cdk
-        - REF=CampbellBrett-AI-feature-integration
       secrets:
         - GITHUB_TOKEN
     events:
