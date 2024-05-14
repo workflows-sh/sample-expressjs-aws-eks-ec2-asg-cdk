@@ -1,5 +1,6 @@
 const express = require('express')
 var path = require('path');
+const { TreeNode, preorderTraversal } = require('./preorderTraversal')
 
 const PORT = process.env.PORT || 3000
 const HOST = '0.0.0.0'
@@ -16,8 +17,23 @@ api.use(express.json())
 api.use(express.static(path.join(__dirname, 'public')));
 
 api.get('/', (req, res) => {
+  // Create a binary tree
+  //     1
+  //    / \
+  //   2   3
+  //  / \
+  // 4   5
+  let root = new TreeNode(1);
+  root.left = new TreeNode(2);
+  root.right = new TreeNode(3);
+  root.left.left = new TreeNode(4);
+  root.left.right = new TreeNode(5);
+
+  // Call preorderTraversal with the root node
+  let result = preorderTraversal(root);
   res.render('index', {
-    release_no: RELEASE_NO
+    release_no: RELEASE_NO,
+    orderedNodes: result
   })
 })
 
