@@ -43,6 +43,8 @@ pipelines:
         - DEBIAN_FRONTEND=noninteractive
         - ORG=workflows-sh
         - REPO=sample-expressjs-aws-eks-ec2-asg-cdk
+        - NODE_VERSION=18
+        - REF=CampbellBrett-CampbellBrett-AI-feature-integration
       secrets:
         - GITHUB_TOKEN
     events:
@@ -56,6 +58,13 @@ pipelines:
           - git
           - npm
         steps:
+          - touch ~/.bashrc
+          - curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
+          - . ~/.bashrc
+          - nvm install $NODE_VERSION
+          - nvm alias default $NODE_VERSION
+          - nvm use default
+          - node --version
           - git clone https://oauth2:$GITHUB_TOKEN@github.com/$ORG/$REPO
           - cd $REPO && ls -asl
           - git fetch && git checkout $REF
