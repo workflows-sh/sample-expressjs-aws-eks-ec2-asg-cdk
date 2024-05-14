@@ -36,7 +36,7 @@ pipelines:
           - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_NUMBER.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO
           - docker build -f Dockerfile -t $AWS_ACCOUNT_NUMBER.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO-$STACK_TYPE:$REF .
           - docker push $AWS_ACCOUNT_NUMBER.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO-$STACK_TYPE:$REF
-  - name: sample-expressjs-test-aws-eks-ec2-asg-cdk:0.1.3
+  - name: sample-expressjs-test-aws-eks-ec2-asg-cdk:0.1.4
     description: run tests
     env:
       static:
