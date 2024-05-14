@@ -5,15 +5,11 @@ function TreeNode(val) {
 
 function preorderTraversal(root) {
   let result = [];
-
-  function traverse(node) {
-    if (node === null) return;
-    result.push(node.val); // Visit the current node
-    traverse(node.left);   // Traverse left subtree
-    traverse(node.right);  // Traverse right subtree
+  if (root !== null) {
+    result.push(root.val);
+    preorderTraversal(root.left);
+    preorderTraversal(root.right);
   }
-
-  traverse(root); // Start traversal from the root
   return result;
 }
 
