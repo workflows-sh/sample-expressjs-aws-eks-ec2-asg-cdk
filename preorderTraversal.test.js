@@ -1,4 +1,4 @@
-// This test checks if the login function rejects invalid credentials
+// This test checks if the preorderTraversal orders as expected
 
 const { TreeNode, preorderTraversal } = require('./preorderTraversal');
 
