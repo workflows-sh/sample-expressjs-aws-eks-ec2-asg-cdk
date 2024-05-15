@@ -7,8 +7,8 @@ function preorderTraversal(root) {
   let result = [];
   if (root !== null) {
     result.push(root.val);
-    preorderTraversal(root.left);
-    preorderTraversal(root.right);
+    result = result.concat(preorderTraversal(root.left));
+    result = result.concat(preorderTraversal(root.right));
   }
   return result;
 }
