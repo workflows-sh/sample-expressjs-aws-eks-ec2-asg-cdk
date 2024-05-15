@@ -7,8 +7,8 @@ function preorderTraversal(root) {
   let result = [];
   if (root !== null) {
     result.push(root.val);
-    preorderTraversal(root.left);
-    preorderTraversal(root.right);
+    result.push(...preorderTraversal(root.left));
+    result.push(...preorderTraversal(root.right));
   }
   return result;
 }
@@ -16,4 +16,4 @@ function preorderTraversal(root) {
 module.exports = {
   TreeNode,
   preorderTraversal
-}
+};
