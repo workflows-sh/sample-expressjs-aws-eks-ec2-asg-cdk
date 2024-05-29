@@ -11,4 +11,8 @@ function preorderTraversal(root) {
     preorderTraversal(root.right);
   }
   return result;
+
+module.exports = {
+  TreeNode,
+  preorderTraversal
 }
