@@ -38,3 +38,8 @@ api.get('/', (req, res) => {
 
 api.listen(PORT, HOST)
 console.log(`Running on http://${HOST}:${PORT}`)
+
+// Handle SIGINT (Ctrl+C)
+process.on('SIGINT', () => {
+  process.exit(0);
+})
