@@ -1,6 +1,6 @@
 version: "1"
 pipelines:
-  - name: sample-expressjs-pipeline-aws-eks-ec2-asg-cdk:0.1.3
+  - name: sample-expressjs-pipeline-aws-eks-stack:0.2.2
     description: build a release for deployment
     env:
       static:
@@ -8,7 +8,7 @@ pipelines:
         - ORG=workflows-sh
         - REPO=sample-expressjs-aws-eks-ec2-asg-cdk
         - AWS_REGION=us-west-1
-        - STACK_TYPE=aws-eks-ec2-asg-cdk
+        - STACK_TYPE=aws-eks-stack
       secrets:
         - GITHUB_TOKEN
         - AWS_ACCESS_KEY_ID
@@ -19,7 +19,7 @@ pipelines:
       - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg-cdk:pull_request.opened"
       - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg-cdk:pull_request.synchronize"
     jobs:
-      - name: sample-expressjs-build-job-aws-eks-ec2-asg-cdk
+      - name: sample-expressjs-build-job-aws-eks-stack
         description: sample-expressjs build step
         packages:
           - git
@@ -36,7 +36,7 @@ pipelines:
           - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_NUMBER.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO
           - docker build -f Dockerfile -t $AWS_ACCOUNT_NUMBER.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO-$STACK_TYPE:$REF .
           - docker push $AWS_ACCOUNT_NUMBER.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO-$STACK_TYPE:$REF
-  - name: sample-expressjs-test-aws-eks-ec2-asg-cdk:0.1.4
+  - name: sample-expressjs-test-aws-eks-stack:0.2.0
     description: run tests
     env:
       static:
@@ -50,7 +50,7 @@ pipelines:
       - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg-cdk:pull_request.opened"
       - "github:workflows-sh/sample-expressjs-aws-eks-ec2-asg-cdk:pull_request.synchronize"
     jobs:
-      - name: sample-expressjs-test-job-aws-eks-ec2-asg-cdk
+      - name: sample-expressjs-test-job-aws-eks-stack
         description: sample-expressjs test step
         packages:
           - git
@@ -62,7 +62,7 @@ pipelines:
           - npm i
           - npm run test
 services:
-  - name: sample-expressjs-service-aws-eks-ec2-asg-cdk:0.1.5
+  - name: sample-expressjs-service-aws-eks-stack:0.2.0
     description: A sample expressjs service
     run: node /ops/index.js
     port: [ '8080:8080' ]
