@@ -7,6 +7,7 @@ pipelines:
         - DEBIAN_FRONTEND=noninteractive
         - ORG=workflows-sh
         - REPO=sample-expressjs-aws-eks-ec2-asg-cdk
+        - ECR_REPO=sample-expressjs-app
         - AWS_REGION=us-west-1
         - STACK_TYPE=aws-eks-ec2-asg-cdk
       secrets:
@@ -33,9 +34,9 @@ pipelines:
           - git clone https://oauth2:$GITHUB_TOKEN@github.com/$ORG/$REPO
           - cd $REPO && ls -asl
           - git fetch && git checkout $REF
-          - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_NUMBER.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO
-          - docker build -f Dockerfile -t $AWS_ACCOUNT_NUMBER.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO-$STACK_TYPE:$REF .
-          - docker push $AWS_ACCOUNT_NUMBER.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO-$STACK_TYPE:$REF
+          - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_NUMBER.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO
+          - docker build -f Dockerfile -t $AWS_ACCOUNT_NUMBER.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO-$STACK_TYPE:$REF .
+          - docker push $AWS_ACCOUNT_NUMBER.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO-$STACK_TYPE:$REF
   - name: sample-expressjs-test-aws-eks-ec2-asg-cdk:0.1.4
     description: run tests
     env:
@@ -43,6 +44,7 @@ pipelines:
         - DEBIAN_FRONTEND=noninteractive
         - ORG=workflows-sh
         - REPO=sample-expressjs-aws-eks-ec2-asg-cdk
+        - ECR_REPO=sample-expressjs-app
       secrets:
         - GITHUB_TOKEN
     events:
